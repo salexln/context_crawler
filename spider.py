@@ -2,6 +2,8 @@ from bs4 import BeautifulSoup
 import urllib2
 import re
 import sys
+import networkx as nx
+import matplotlib.pyplot as plt
 
 
 class Spider(object):
@@ -24,6 +26,16 @@ class Spider(object):
 		print '\n'
 		for category in self._category_links:
 			print category
+
+	def plot_graph(self):
+		g = nx.DiGraph()
+		edges = []
+		for category in self._category_links:
+			edges.append((category, self._subject))
+		g.add_edges_from(edges)
+
+		nx.draw(g)
+		plt.show()
 
 	def _validate_ulr(self, url):				
 		if not 'wiki/Category:' in url:			
@@ -68,3 +80,4 @@ if __name__ == '__main__':
 	sp = Spider(url)
 	sp.crawl()	
 	sp.print_category_links()
+	sp.plot_graph()
