@@ -13,7 +13,8 @@ class Spider(object):
 			quit(-1)
 
 		self._url = url
-		self._category_links = []
+		self._subject = url.split(':')[-1]		
+		self._category_links = []	
 
 	def crawl(self):
 		self._get_categories()
@@ -24,19 +25,23 @@ class Spider(object):
 		for category in self._category_links:
 			print category
 
-	def _validate_ulr(self, url):
-		if not 'wiki/Category:' in url:
+	def _validate_ulr(self, url):				
+		if not 'wiki/Category:' in url:			
 			return False
 		return True
 
-	def _check_link(self, link):
+	def _check_link(self, link):		
+		bad_link = '/wiki/Category:' + self._subject		
+
 		if str(link).startswith('/wiki/Category'):
 			if not str(link).startswith('/wiki/Category:Wikipedia') and\
 			 not str(link).startswith('/wiki/Category:Articles') and\
-			  not str(link).startswith('/wiki/Category:All_articles'):		
-				return True
+			  not str(link).startswith('/wiki/Category:All_articles') and\
+			   not str(link).startswith('/wiki/Category_talk') and\
+			    not str(link) == '/wiki/Category:Commons_category_with_local_link_same_as_on_Wikidata':
+			   		if not str(link) == bad_link:			   		
+						return True
 		return False
-
 
 	def _get_categories(self):	
 		html_page = urllib2.urlopen(self._url)
@@ -45,6 +50,7 @@ class Spider(object):
 			link = link.get('href')
 			if self._check_link(link):
 				self._category_links.append(link)
+
 
 if __name__ == '__main__':
 	if len(sys.argv) != 2:
