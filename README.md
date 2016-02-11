@@ -1,4 +1,4 @@
-Context Crawler
+Context Crawler v0.1
 ==============
 
 **Install:**
@@ -6,6 +6,7 @@ Context Crawler
 - sudo apt-get install python-bs4
 
 
-**Usage:**
-
-    python spider.py 'https://en.wikipedia.org/wiki/London'
+**Usage:**   
+	In order to get the categories, the script must have an input Wiki Category url:
+	
+	python spider.py https://en.wikipedia.org/wiki/Category:London
